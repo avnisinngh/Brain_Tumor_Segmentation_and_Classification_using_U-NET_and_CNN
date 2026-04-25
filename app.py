@@ -1,12 +1,11 @@
-import os
-# MUST be at the very top to fix the TypeError you saw
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-
 import streamlit as st
 import numpy as np
 import cv2
 import tensorflow as tf
-import keras  # Import keras explicitly
+from PIL import Image
+# MUST be at the very top to fix the TypeError you saw
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
+
 from PIL import Image
 
 # =====================================================
@@ -118,9 +117,9 @@ RED_IMG_SIZE = 128
 # =====================================================
 @st.cache_resource
 def load_models():
-    # Use keras.models.load_model with compile=False for better .h5 compatibility
-    unet = keras.models.load_model("unet_final.h5", compile=False)
-    cnn = keras.models.load_model("cnn_final.h5", compile=False)
+    # Explicitly use tf.keras (not standalone keras)
+    unet = tf.keras.models.load_model("unet_final.h5", compile=False)
+    cnn = tf.keras.models.load_model("cnn_final.h5", compile=False)
     return unet, cnn
 
 unet_model, cnn_model = load_models()
