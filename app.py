@@ -2,6 +2,7 @@ import streamlit as st
 import numpy as np
 import cv2
 import tensorflow as tf
+import keras  # Import modern Keras 3 directly
 from PIL import Image
 
 # =====================================================
@@ -113,9 +114,9 @@ RED_IMG_SIZE = 128
 # =====================================================
 @st.cache_resource
 def load_models():
-    # Explicitly use tf.keras (not standalone keras)
-    unet = tf.keras.models.load_model("unet_final.h5", compile=False)
-    cnn = tf.keras.models.load_model("cnn_final.h5", compile=False)
+    # Use keras directly to parse the new .h5 format
+    unet = keras.models.load_model("unet_final.h5", compile=False)
+    cnn = keras.models.load_model("cnn_final.h5", compile=False)
     return unet, cnn
 
 unet_model, cnn_model = load_models()
