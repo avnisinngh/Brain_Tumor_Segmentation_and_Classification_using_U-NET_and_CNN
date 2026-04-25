@@ -3,10 +3,6 @@ import numpy as np
 import cv2
 import tensorflow as tf
 from PIL import Image
-# MUST be at the very top to fix the TypeError you saw
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-
-from PIL import Image
 
 # =====================================================
 # PAGE CONFIG
