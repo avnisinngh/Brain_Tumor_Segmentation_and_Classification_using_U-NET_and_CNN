@@ -1,7 +1,12 @@
+import os
+# MUST be at the very top to fix the TypeError you saw
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
+
 import streamlit as st
 import numpy as np
 import cv2
 import tensorflow as tf
+import keras  # Import keras explicitly
 from PIL import Image
 
 # =====================================================
@@ -19,22 +24,16 @@ st.set_page_config(
 # =====================================================
 st.markdown("""
 <style>
-
 html, body, [class*="css"] {
     font-family: 'Segoe UI', sans-serif;
 }
-
 .stApp {
     background: linear-gradient(135deg,#0f172a,#111827,#1e293b);
     color: white;
 }
-
-/* Hide Streamlit default */
 #MainMenu {visibility:hidden;}
 footer {visibility:hidden;}
 header {visibility:hidden;}
-
-/* Main title */
 .main-title {
     font-size: 42px;
     font-weight: 700;
@@ -42,15 +41,12 @@ header {visibility:hidden;}
     margin-top: 10px;
     color: white;
 }
-
 .sub-title {
     text-align:center;
     color:#cbd5e1;
     font-size:18px;
     margin-bottom:25px;
 }
-
-/* Glass cards */
 .glass {
     background: rgba(255,255,255,0.08);
     padding: 22px;
@@ -59,8 +55,6 @@ header {visibility:hidden;}
     border: 1px solid rgba(255,255,255,0.12);
     box-shadow: 0 8px 30px rgba(0,0,0,0.25);
 }
-
-/* Prediction card */
 .pred-card {
     background: linear-gradient(135deg,#2563eb,#7c3aed);
     padding: 25px;
@@ -69,33 +63,26 @@ header {visibility:hidden;}
     color:white;
     box-shadow: 0 10px 35px rgba(0,0,0,0.3);
 }
-
 .pred-label {
     font-size: 14px;
     letter-spacing: 1px;
     opacity:0.9;
 }
-
 .pred-class {
     font-size: 34px;
     font-weight: 800;
     margin-top:8px;
 }
-
 .conf {
     font-size:18px;
     margin-top:10px;
 }
-
-/* uploader */
 section[data-testid="stFileUploader"] {
     background: rgba(255,255,255,0.06);
     padding: 18px;
     border-radius: 18px;
     border: 1px dashed rgba(255,255,255,0.25);
 }
-
-/* metric chips */
 .chip {
     background: rgba(255,255,255,0.08);
     padding:10px 16px;
@@ -105,22 +92,17 @@ section[data-testid="stFileUploader"] {
     margin-bottom:8px;
     font-size:14px;
 }
-
-/* section title */
 .sec {
     font-size:22px;
     font-weight:700;
     margin-bottom:10px;
     margin-top:10px;
 }
-
-/* image captions */
 .cap {
     text-align:center;
     color:#cbd5e1;
     margin-top:6px;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -128,7 +110,6 @@ section[data-testid="stFileUploader"] {
 # CONSTANTS
 # =====================================================
 classes = ['glioma', 'meningioma', 'pituitary', 'notumor']
-
 SEG_IMG_SIZE = 256
 RED_IMG_SIZE = 128
 
@@ -137,8 +118,9 @@ RED_IMG_SIZE = 128
 # =====================================================
 @st.cache_resource
 def load_models():
-    unet = tf.keras.models.load_model("unet_final.h5", compile=False)
-    cnn = tf.keras.models.load_model("cnn_final.h5", compile=False)
+    # Use keras.models.load_model with compile=False for better .h5 compatibility
+    unet = keras.models.load_model("unet_final.h5", compile=False)
+    cnn = keras.models.load_model("cnn_final.h5", compile=False)
     return unet, cnn
 
 unet_model, cnn_model = load_models()
@@ -172,7 +154,6 @@ uploaded_file = st.file_uploader(
 # MAIN
 # =====================================================
 if uploaded_file is not None:
-
     pil_img = Image.open(uploaded_file)
     img_rgb = np.array(pil_img)
 
@@ -268,12 +249,8 @@ if uploaded_file is not None:
         classes[i]: float(pred[i])
         for i in range(len(classes))
     }
-
     st.bar_chart(chart_data)
 
-    # =================================================
-    # STATUS MESSAGE
-    # =================================================
     if np.sum(mask) == 0:
         st.warning("⚠️ No tumor region strongly detected by segmentation model.")
 
