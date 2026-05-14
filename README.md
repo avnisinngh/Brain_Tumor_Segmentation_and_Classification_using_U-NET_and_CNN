@@ -17,6 +17,37 @@ The full pipeline:
 2. The largest ROI (Region of Interest) is cropped from the mask
 3. **CNN** classifies the cropped region into a tumor type
 
+
+---
+ 
+## 🌐 Streamlit Web App — Live Demo
+ 
+The model is deployed as an interactive web application using **Streamlit**, allowing users to upload MRI scans and receive real-time predictions with visual explanations.
+ 
+### MRI Visual Analysis
+ 
+The app displays three panels side-by-side for each uploaded MRI scan:
+ 
+| Panel | Description |
+|-------|-------------|
+| **Original MRI** | The raw grayscale input scan |
+| **Tumor Highlight Overlay** | U-Net segmentation mask overlaid in red |
+| **Extracted Tumor Region** | Cropped ROI passed to the CNN classifier |
+ 
+![MRI Visual Analysis](streamlit_mri_analysis.jpeg)
+ 
+*The U-Net precisely segments the tumor boundary (red overlay), and the extracted region is isolated for classification.*
+ 
+---
+ 
+### Prediction Confidence
+ 
+After classification, the app renders a bar chart showing the model's confidence across all four tumor classes:
+ 
+![Prediction Confidence Chart](streamlit_prediction_confidence.jpeg)
+ 
+*In this example, the model predicts **meningioma** with ~100% confidence.*
+ 
 ---
 
 ## 🗂️ Dataset
