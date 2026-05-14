@@ -34,7 +34,7 @@ The app displays three panels side-by-side for each uploaded MRI scan:
 | **Tumor Highlight Overlay** | U-Net segmentation mask overlaid in red |
 | **Extracted Tumor Region** | Cropped ROI passed to the CNN classifier |
  
-![MRI Visual Analysis](streamlit_mri_analysis.jpeg)
+![MRI Visual Analysis](one.jpeg)
  
 *The U-Net precisely segments the tumor boundary (red overlay), and the extracted region is isolated for classification.*
  
@@ -44,7 +44,8 @@ The app displays three panels side-by-side for each uploaded MRI scan:
  
 After classification, the app renders a bar chart showing the model's confidence across all four tumor classes:
  
-![Prediction Confidence Chart](streamlit_prediction_confidence.jpeg)
+![Prediction Confidence Chart](two.jpeg)
+![Prediction Confidence Chart](three.jpeg)
  
 *In this example, the model predicts **meningioma** with ~100% confidence.*
  
